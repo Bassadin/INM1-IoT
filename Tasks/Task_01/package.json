@@ -1,0 +1,27 @@
+{
+  "name": "inm1-iot",
+  "version": "1.0.0",
+  "description": "Internet of Things - WiSe 22/23",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Bassadin/INM1-IoT.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Bassadin/INM1-IoT/issues"
+  },
+  "homepage": "https://github.com/Bassadin/INM1-IoT#readme",
+  "dependencies": {
+    "dotenv": "^16.0.3",
+    "mqtt": "^4.3.7"
+  },
+  "devDependencies": {
+    "ts-node": "^10.9.1",
+    "typescript": "^4.8.4"
+  }
+}

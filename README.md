@@ -1,2 +1,3 @@
-# INM1-IoT
-Internet of Things - WiSe 22/23
+# IoT - INM1 - Wintersemester 2022/2023
+
+Find the tasks in the corresponding subdirectory
