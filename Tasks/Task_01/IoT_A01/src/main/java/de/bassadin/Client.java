@@ -8,7 +8,7 @@ import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;
 import java.security.Key;
 
-public class Main {
+public class Client {
     // https://github.com/eclipse/paho.mqtt.java
     static String clientId = "Machine Alice";
     static String topic = "MQTT Examples";
@@ -25,7 +25,6 @@ public class Main {
     }
 
     public static void main(String[] args) throws Exception {
-
         MqttClient mqttClient = new MqttClient(brokerHostName, clientId);
 
         System.out.println("Connecting to broker: " + brokerHostName);
