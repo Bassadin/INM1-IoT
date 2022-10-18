@@ -27,8 +27,8 @@ public class Main {
         System.out.println("Connecting to broker: " + brokerHostName);
         mqttClient.connect(mqttConnectOptions);
         System.out.println("Connected");
-        System.out.println("Publishing message: " + content);
 
+        System.out.println("Publishing message: " + content);
         MqttMessage mqttMessage = new MqttMessage(content.getBytes());
         mqttMessage.setQos(qos);
 
@@ -43,20 +43,25 @@ public class Main {
         String data = "Satz, den man verschlüsseln kann, muss man aber nicht!";
         try {
             KeyGenerator keygen = KeyGenerator.getInstance("AES");
-            keygen.init(256);//,random);
-
+            keygen.init(256);
             Key secretKey = keygen.generateKey();
-            Cipher aesCipherInstance = Cipher.getInstance("AES");
+
+            // Encryption instance
+            Cipher aesEncryptCipherInstance = Cipher.getInstance("AES");
+            aesEncryptCipherInstance.init(Cipher.ENCRYPT_MODE, secretKey);
+
+            // Decryption instance
+            Cipher aesDecryptCipherInstance = Cipher.getInstance("AES");
+            aesDecryptCipherInstance.init(Cipher.DECRYPT_MODE, secretKey);
 
             byte[] dataAsBytes = data.getBytes("UTF8");
-            aesCipherInstance.init(Cipher.ENCRYPT_MODE, secretKey);
 
-            byte[] encryptedBytes = aesCipherInstance.doFinal(dataAsBytes);
+            // Encrypt
+            byte[] encryptedBytes = aesEncryptCipherInstance.doFinal(dataAsBytes);
             String encryptedString = new String(encryptedBytes);
-            aesCipherInstance = Cipher.getInstance("AES");
-            aesCipherInstance.init(Cipher.DECRYPT_MODE, secretKey);
 
-            byte[] decryptedBytes = aesCipherInstance.doFinal(encryptedBytes);
+            // Decrypt
+            byte[] decryptedBytes = aesDecryptCipherInstance.doFinal(encryptedBytes);
             String decryptedString = new String(decryptedBytes);
 
             System.out.println("Original String : (" + data + ")");
