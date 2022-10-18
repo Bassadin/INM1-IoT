@@ -1,44 +1,41 @@
 package de.bassadin;
 
 import org.eclipse.paho.client.mqttv3.MqttClient;
-import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
-import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 
 import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;
 import java.security.Key;
 
 public class Main {
-    public static void main(String[] args) throws Exception {
-        // https://github.com/eclipse/paho.mqtt.java
-        String topic = "MQTT Examples";
-        String content = "Message from MqttPublishSample";
-        int qos = 2;
-        String brokerHostName = "tcp://221419df-1da2-441d-85a2-451d3809358b.fr.bw-cloud-instance.org";
-        String clientId = "Java MQTT Client 1";
+    // https://github.com/eclipse/paho.mqtt.java
+    static String clientId = "Machine Alice";
+    static String topic = "MQTT Examples";
+    static String content = "Message from MqttPublishSample";
+    static final int mqttQOS = 2;
+    static String brokerHostName = "tcp://221419df-1da2-441d-85a2-451d3809358b.fr.bw-cloud-instance.org";
 
-        MqttClient mqttClient = new MqttClient(brokerHostName, clientId);
-
-        MqttConnectOptions mqttConnectOptions = new MqttConnectOptions();
-        mqttConnectOptions.setCleanSession(true);
-
-        System.out.println("Connecting to broker: " + brokerHostName);
-        mqttClient.connect(mqttConnectOptions);
-        System.out.println("Connected");
-
-        System.out.println("Publishing message: " + content);
+    private static void publishMqttMessage(MqttClient mqttClient, String message) throws MqttException {
         MqttMessage mqttMessage = new MqttMessage(content.getBytes());
-        mqttMessage.setQos(qos);
+        mqttMessage.setQos(mqttQOS);
 
         mqttClient.publish(topic, mqttMessage);
         System.out.println("Message published");
+    }
+
+    public static void main(String[] args) throws Exception {
+
+        MqttClient mqttClient = new MqttClient(brokerHostName, clientId);
+
+        System.out.println("Connecting to broker: " + brokerHostName);
+        mqttClient.connect();
+        System.out.println("Connected");
+
+        publishMqttMessage(mqttClient, content);
 
         mqttClient.disconnect();
         System.out.println("Disconnected");
-
-        System.exit(0);
 
         String data = "Satz, den man verschlüsseln kann, muss man aber nicht!";
         try {
