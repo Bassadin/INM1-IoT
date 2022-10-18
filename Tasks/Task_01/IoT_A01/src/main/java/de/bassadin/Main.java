@@ -17,32 +17,28 @@ public class Main {
         String content = "Message from MqttPublishSample";
         int qos = 2;
         String brokerHostName = "tcp://221419df-1da2-441d-85a2-451d3809358b.fr.bw-cloud-instance.org";
-        String clientId = "JavaSample";
-        MemoryPersistence persistence = new MemoryPersistence();
+        String clientId = "Java MQTT Client 1";
 
-        try {
-            MqttClient sampleClient = new MqttClient(brokerHostName, clientId, persistence);
-            MqttConnectOptions connOpts = new MqttConnectOptions();
-            connOpts.setCleanSession(true);
-            System.out.println("Connecting to broker: " + brokerHostName);
-            sampleClient.connect(connOpts);
-            System.out.println("Connected");
-            System.out.println("Publishing message: " + content);
-            MqttMessage message = new MqttMessage(content.getBytes());
-            message.setQos(qos);
-            sampleClient.publish(topic, message);
-            System.out.println("Message published");
-            sampleClient.disconnect();
-            System.out.println("Disconnected");
-            System.exit(0);
-        } catch (MqttException me) {
-            System.out.println("reason " + me.getReasonCode());
-            System.out.println("msg " + me.getMessage());
-            System.out.println("loc " + me.getLocalizedMessage());
-            System.out.println("cause " + me.getCause());
-            System.out.println("excep " + me);
-            me.printStackTrace();
-        }
+        MqttClient mqttClient = new MqttClient(brokerHostName, clientId);
+
+        MqttConnectOptions mqttConnectOptions = new MqttConnectOptions();
+        mqttConnectOptions.setCleanSession(true);
+
+        System.out.println("Connecting to broker: " + brokerHostName);
+        mqttClient.connect(mqttConnectOptions);
+        System.out.println("Connected");
+        System.out.println("Publishing message: " + content);
+
+        MqttMessage mqttMessage = new MqttMessage(content.getBytes());
+        mqttMessage.setQos(qos);
+
+        mqttClient.publish(topic, mqttMessage);
+        System.out.println("Message published");
+
+        mqttClient.disconnect();
+        System.out.println("Disconnected");
+
+        System.exit(0);
 
         String data = "Satz, den man verschlüsseln kann, muss man aber nicht!";
         try {
