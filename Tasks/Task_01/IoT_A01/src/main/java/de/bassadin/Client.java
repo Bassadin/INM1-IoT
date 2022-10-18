@@ -16,6 +16,20 @@ public class Client {
     static final int mqttQOS = 2;
     static String brokerHostName = "tcp://221419df-1da2-441d-85a2-451d3809358b.fr.bw-cloud-instance.org";
 
+    static Long publicKey1 = 3461049572396L;
+    static Long publicKey2 = 98751942343464357L;
+
+    static Long user1PrivateKey = 42L;
+    static Long user2PrivateKey = 69L;
+
+    private Long calculateDiffieHellmanKey(Long publicKey1, Long privateKey, Long publicKey2) {
+        if (privateKey == 1) {
+            return publicKey1;
+        } else {
+            return ((long) Math.pow(publicKey1, privateKey)) % publicKey2;
+        }
+    }
+
     private static void publishMqttMessage(MqttClient mqttClient, String message) throws MqttException {
         MqttMessage mqttMessage = new MqttMessage(content.getBytes());
         mqttMessage.setQos(mqttQOS);
