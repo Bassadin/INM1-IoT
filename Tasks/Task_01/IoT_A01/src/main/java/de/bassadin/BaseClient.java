@@ -20,4 +20,8 @@ public abstract class BaseClient {
     protected Long calculateDiffieHellmanKey() {
         return Helpers.calculateDiffieHellmanKey(Helpers.publicKey1, this.privateKey, Helpers.publicKey2);
     }
+
+    private void printLogWithClientIdPrefix(String message) {
+        System.out.println(this.clientName + " - " + message);
+    }
 }
