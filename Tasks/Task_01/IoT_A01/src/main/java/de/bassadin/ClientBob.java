@@ -11,7 +11,5 @@ public class ClientBob extends BaseClient {
 
     public ClientBob() throws Exception {
         super(69L, "ClientBob");
-
-//        this.hellmanMQTTClient.disconnectClient();
     }
 }

@@ -6,6 +6,9 @@ import org.eclipse.paho.client.mqttv3.MqttMessage;
 import java.util.Objects;
 
 public abstract class BaseClient {
+    // Topics
+    public static String greetingsTopic = "hellman/greetings";
+    public static String keyExchangeBaseTopic = "hellman/keyexchange/";
     protected String keyExchangeTopicString;
     protected Long privateKey;
     protected Long diffieHellmanKey;
@@ -13,7 +16,6 @@ public abstract class BaseClient {
     protected String clientName;
 
     protected BaseClient otherClientReference;
-
     protected Boolean isDiffieHellmanKeyValidated = false;
 
     public BaseClient(Long privateKey, String clientName) throws MqttException {
@@ -24,9 +26,9 @@ public abstract class BaseClient {
         System.out.println("Calculated Hellman key for client " + this.clientName + ": " + this.diffieHellmanKey);
         this.hellmanMQTTClient = new HellmanMQTTClient(this.clientName);
 
-        this.keyExchangeTopicString = "hellman/keyexchange/" + this.clientName;
+        this.keyExchangeTopicString = keyExchangeBaseTopic + this.clientName;
 
-        this.hellmanMQTTClient.publishMqttMessage("Hello from " + this.clientName, "hellman/greetings");
+        this.hellmanMQTTClient.publishMqttMessage("Hello from " + this.clientName, greetingsTopic);
     }
 
     protected Long calculateDiffieHellmanKey() {

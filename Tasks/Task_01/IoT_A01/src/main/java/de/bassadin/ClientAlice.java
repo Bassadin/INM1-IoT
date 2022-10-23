@@ -10,7 +10,5 @@ public class ClientAlice extends BaseClient {
 
     public ClientAlice() throws Exception {
         super(42L, "ClientAlice");
-
-//        this.hellmanMQTTClient.disconnectClient();
     }
 }
