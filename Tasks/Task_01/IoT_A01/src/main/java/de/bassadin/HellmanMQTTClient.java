@@ -33,6 +33,6 @@ public class HellmanMQTTClient {
     }
 
     private void printLogWithClientIdPrefix(String message) {
-        System.out.println(this.clientId + " - " + message);
+        Helpers.printLogWithPrefix(this.clientId, message);
     }
 }

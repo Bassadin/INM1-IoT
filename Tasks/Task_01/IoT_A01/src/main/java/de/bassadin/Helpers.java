@@ -11,4 +11,7 @@ public class Helpers {
             return ((long) Math.pow(publicKey1, privateKey)) % publicKey2;
         }
     }
+    public static void printLogWithPrefix(String prefix, String message) {
+        System.out.println(prefix + " - " + message);
+    }
 }

@@ -36,7 +36,7 @@ public abstract class BaseClient {
     }
 
     protected void printLogWithClientIdPrefix(String message) {
-        System.out.println(this.clientName + " - " + message);
+        Helpers.printLogWithPrefix(this.clientName, message);
     }
 
     protected void handleKeyExchangeMessage(String topic, MqttMessage mqttMessage) {
