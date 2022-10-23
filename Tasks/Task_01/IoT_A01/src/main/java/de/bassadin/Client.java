@@ -1,54 +1,23 @@
 package de.bassadin;
 
-import org.eclipse.paho.client.mqttv3.MqttClient;
-import org.eclipse.paho.client.mqttv3.MqttException;
-import org.eclipse.paho.client.mqttv3.MqttMessage;
-
 import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;
 import java.security.Key;
 
 public class Client {
-    // https://github.com/eclipse/paho.mqtt.java
-    static String clientId = "Machine Alice";
-    static String topic = "MQTT Examples";
-    static String content = "Message from MqttPublishSample";
-    static final int mqttQOS = 2;
-    static String brokerHostName = "tcp://221419df-1da2-441d-85a2-451d3809358b.fr.bw-cloud-instance.org";
-
     static Long publicKey1 = 3461049572396L;
     static Long publicKey2 = 98751942343464357L;
 
     static Long user1PrivateKey = 42L;
     static Long user2PrivateKey = 69L;
 
-    private Long calculateDiffieHellmanKey(Long publicKey1, Long privateKey, Long publicKey2) {
-        if (privateKey == 1) {
-            return publicKey1;
-        } else {
-            return ((long) Math.pow(publicKey1, privateKey)) % publicKey2;
-        }
-    }
-
-    private static void publishMqttMessage(MqttClient mqttClient, String message) throws MqttException {
-        MqttMessage mqttMessage = new MqttMessage(content.getBytes());
-        mqttMessage.setQos(mqttQOS);
-
-        mqttClient.publish(topic, mqttMessage);
-        System.out.println("Message published");
-    }
-
     public static void main(String[] args) throws Exception {
-        MqttClient mqttClient = new MqttClient(brokerHostName, clientId);
 
-        System.out.println("Connecting to broker: " + brokerHostName);
-        mqttClient.connect();
-        System.out.println("Connected");
+        HellmanMQTTClient demoClient = new HellmanMQTTClient();
 
-        publishMqttMessage(mqttClient, content);
+        demoClient.publishMqttMessage("Message from MqttPublishSample");
+        demoClient.disconnectClient();
 
-        mqttClient.disconnect();
-        System.out.println("Disconnected");
 
         String data = "Satz, den man verschlüsseln kann, muss man aber nicht!";
         try {
