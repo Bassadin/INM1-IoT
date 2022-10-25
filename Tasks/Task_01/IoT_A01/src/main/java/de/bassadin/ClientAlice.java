@@ -30,4 +30,20 @@ public class ClientAlice extends BaseClient {
         String messageContent = "g=" + this.g + ",p=" + this.p + ",A=" + A;
         this.hellmanMQTTClient.publishMqttMessage(messageContent, this.getKeyExchangeTopicString());
     }
+
+    public void subscribeToOtherClientKeyExchangeTopic() throws MqttException {
+        this.hellmanMQTTClient.mqttClient.subscribe(otherClientReference.getKeyExchangeTopicString(), this::handleKeyExchangeMessage);
+    }
+
+    protected void handleKeyExchangeMessage(String topic, MqttMessage mqttMessage) throws MqttException {
+        String messageString = mqttMessage.toString();
+        this.printLogWithClientIdPrefix("received subscribed message: " + messageString);
+
+        String[] varsParts = messageString.split("=");
+        long dhBValue = Long.parseLong(varsParts[1]);
+
+        this.K = Helpers.calculateDiffieHellmanFormula(dhBValue, a, p);
+
+        this.printLogWithClientIdPrefix("K: " + K);
+    }
 }

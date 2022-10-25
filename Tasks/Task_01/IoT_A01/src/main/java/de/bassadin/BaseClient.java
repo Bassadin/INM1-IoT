@@ -8,13 +8,14 @@ import java.util.Objects;
 public abstract class BaseClient {
     // Topics
     public static String greetingsTopic = "hellman/greetings";
-    public static String keyExchangeBaseTopic = "hellman/keyexchange/";
+    public static String keyExchangeBaseTopic = "hellman/key-exchange/";
+
+    public static String machineDataExchangeTopic = "hellman/machine-data";
     protected String keyExchangeTopicString;
     protected HellmanMQTTClient hellmanMQTTClient;
     protected String clientName;
 
     protected BaseClient otherClientReference;
-    protected Boolean isDiffieHellmanKeyValidated = false;
 
     public BaseClient(String clientName) throws MqttException {
         this.clientName = clientName;
