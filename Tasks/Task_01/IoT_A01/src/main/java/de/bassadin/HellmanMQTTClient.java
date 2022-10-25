@@ -15,7 +15,13 @@ public class HellmanMQTTClient {
         mqttClient = new MqttClient(brokerHostName, clientId);
 
         printLogWithClientIdPrefix("Connecting to broker: " + brokerHostName);
-        mqttClient.connect();
+
+        MqttConnectOptions connectionOptions = new MqttConnectOptions();
+        connectionOptions.setCleanSession(true);
+        connectionOptions.setUserName("mqttuser");
+        connectionOptions.setPassword("mqttuser".toCharArray());
+
+        mqttClient.connect(connectionOptions);
         printLogWithClientIdPrefix("Connected");
     }
 
