@@ -12,7 +12,7 @@ public class Main {
         clientAlice.setOtherClientReference(clientBob);
         clientBob.setOtherClientReference(clientAlice);
 
-        clientAlice.sendDiffieHellmanKey();
-        clientBob.sendDiffieHellmanKey();
+        clientBob.subscribeToOtherClientKeyExchangeTopic();
+        clientAlice.publishInitialDiffieHellmanKeyExchangeMessage();
     }
 }
