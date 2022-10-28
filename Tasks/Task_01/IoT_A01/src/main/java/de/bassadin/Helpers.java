@@ -23,4 +23,8 @@ public class Helpers {
         }
         return result;
     }
+
+    public static double randomFloatBetween(double min, double max) {
+        return min + Math.random() * (max - min);
+    }
 }
