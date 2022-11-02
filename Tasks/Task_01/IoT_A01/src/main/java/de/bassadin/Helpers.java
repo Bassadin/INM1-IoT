@@ -37,11 +37,11 @@ public class Helpers {
         byte[] decodedKey = Base64.getDecoder().decode(secretLong.toString());
 
         try {
-            Cipher cipher = Cipher.getInstance("AES");
+            Cipher encryptionCipher = Cipher.getInstance("AES");
             SecretKey originalKey = new SecretKeySpec(Arrays.copyOf(decodedKey, 16), "AES");
-            cipher.init(Cipher.ENCRYPT_MODE, originalKey);
-            byte[] cipherText = cipher.doFinal(data.getBytes("UTF-8"));
-            return Base64.getEncoder().encodeToString(cipherText);
+            encryptionCipher.init(Cipher.ENCRYPT_MODE, originalKey);
+            byte[] encryptedCipherText = encryptionCipher.doFinal(data.getBytes("UTF-8"));
+            return Base64.getEncoder().encodeToString(encryptedCipherText);
         } catch (Exception e) {
             throw new RuntimeException(
                     "Error occured while encrypting data", e);
@@ -53,11 +53,11 @@ public class Helpers {
         byte[] decodedKey = Base64.getDecoder().decode(secretLong.toString());
 
         try {
-            Cipher cipher = Cipher.getInstance("AES");
+            Cipher decryptionCipher = Cipher.getInstance("AES");
             SecretKey originalKey = new SecretKeySpec(Arrays.copyOf(decodedKey, 16), "AES");
-            cipher.init(Cipher.DECRYPT_MODE, originalKey);
-            byte[] cipherText = cipher.doFinal(Base64.getDecoder().decode(encryptedString));
-            return new String(cipherText);
+            decryptionCipher.init(Cipher.DECRYPT_MODE, originalKey);
+            byte[] decryptedCipherText = decryptionCipher.doFinal(Base64.getDecoder().decode(encryptedString));
+            return new String(decryptedCipherText);
         } catch (Exception e) {
             throw new RuntimeException(
                     "Error occured while decrypting data", e);

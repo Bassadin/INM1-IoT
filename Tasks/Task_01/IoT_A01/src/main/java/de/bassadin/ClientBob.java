@@ -60,18 +60,16 @@ public class ClientBob extends BaseClient {
 
     public void subscribeToReceiveMachinePieceDataTopic() throws MqttException {
         this.hellmanMQTTClient.mqttClient.subscribe(ClientAlice.machineDataExchangeRequestTopic, (String topic, MqttMessage mqttMessage) -> {
-            String mqttMessageString = mqttMessage.toString();
-//            printLogWithClientIdPrefix(mqttMessageString);
+            String decryptedMessage = Helpers.decryptMessageWithKey(K, mqttMessage.toString());
 
-            String[] messageParts = mqttMessageString.split("=");
+            String[] messageParts = decryptedMessage.split("=");
             double workpieceSize = Double.parseDouble(messageParts[1]);
             boolean isWorkpieceSizeInBounds = workpieceSize >= 29.95 && workpieceSize <= 30.05;
 
             String answerMessage = (isWorkpieceSizeInBounds ? "OK" : "NOK") + " " + messageParts[0];
+            String encryptedMessage = Helpers.encryptMessageWithKey(K, answerMessage);
 
-//            printLogWithClientIdPrefix(answerMessage);
-
-            this.hellmanMQTTClient.publishMqttMessage(answerMessage, ClientBob.machineDataExchangeConfirmationTopic);
+            this.hellmanMQTTClient.publishMqttMessage(encryptedMessage, ClientBob.machineDataExchangeConfirmationTopic);
         });
     }
 }

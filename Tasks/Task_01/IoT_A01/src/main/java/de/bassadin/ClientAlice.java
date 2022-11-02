@@ -12,7 +12,7 @@ public class ClientAlice extends BaseClient {
 
     long a;
     long g;
-    long p = 99971L;
+    long p = 54018521L;
     long A;
     long K;
 
@@ -53,7 +53,8 @@ public class ClientAlice extends BaseClient {
         this.hellmanMQTTClient.mqttClient.subscribe(
                 ClientBob.machineDataExchangeConfirmationTopic,
                 (String topic, MqttMessage mqttMessage) -> {
-                    printLogWithClientIdPrefix("Received confirmation from bob: " + mqttMessage.toString());
+                    String decryptedMessage = Helpers.decryptMessageWithKey(K, mqttMessage.toString());
+                    printLogWithClientIdPrefix("Received confirmation from bob: " + decryptedMessage);
                 });
     }
 
@@ -64,7 +65,8 @@ public class ClientAlice extends BaseClient {
         double workPieceSize = Helpers.randomFloatBetween(29.85, 30.15);
         String zeroPaddedWorkpieceNumber = String.format("%02d", incrementingWorkpieceNumber);
 
-        this.hellmanMQTTClient.publishMqttMessage(zeroPaddedWorkpieceNumber + "=" + workPieceSize, ClientAlice.machineDataExchangeRequestTopic);
+        String encryptedMessage = Helpers.encryptMessageWithKey(K, zeroPaddedWorkpieceNumber + "=" + workPieceSize);
+        this.hellmanMQTTClient.publishMqttMessage(encryptedMessage, ClientAlice.machineDataExchangeRequestTopic);
         incrementingWorkpieceNumber++;
     }
 }
