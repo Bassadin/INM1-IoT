@@ -1,5 +1,8 @@
 package de.bassadin.Clients;
 
+import com.google.gson.Gson;
+import de.bassadin.Confirmation;
+import de.bassadin.Workpiece;
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 
@@ -13,13 +16,17 @@ public class ClientBob extends BaseClient {
 
     public void subscribeToReceiveMachinePieceDataTopic() throws MqttException {
         this.hellmanMQTTClient.mqttClient.subscribe(ClientAlice.machineDataExchangeRequestTopic, (String topic, MqttMessage mqttMessage) -> {
-            String[] messageParts = mqttMessage.toString().split("=");
-            double workpieceSize = Double.parseDouble(messageParts[1]);
-            boolean isWorkpieceSizeInBounds = workpieceSize >= 29.95 && workpieceSize <= 30.05;
 
-            String answerMessage = (isWorkpieceSizeInBounds ? "OK" : "NOK") + " " + messageParts[0];
 
-            this.hellmanMQTTClient.publishMqttMessage(answerMessage, ClientBob.machineDataExchangeConfirmationTopic);
+            Gson gson = new Gson();
+            Workpiece workpiece = gson.fromJson(mqttMessage.toString(), Workpiece.class);
+
+            boolean isWorkpieceSizeInBounds = workpiece.getWorkpieceSize() >= 29.95 && workpiece.getWorkpieceSize() <= 30.05;
+
+            Confirmation confirmation = new Confirmation(workpiece.getWorkpieceSize() - 30.00, workpiece.getWorkpieceNumber(), isWorkpieceSizeInBounds);
+            String confirmationJsonString = gson.toJson(confirmation);
+
+            this.hellmanMQTTClient.publishMqttMessage(confirmationJsonString, ClientBob.machineDataExchangeConfirmationTopic);
         });
     }
 }
