@@ -1,5 +1,6 @@
-package de.bassadin;
+package de.bassadin.Clients;
 
+import de.bassadin.Helpers;
 import org.eclipse.paho.client.mqttv3.*;
 
 public class HellmanMQTTClient {

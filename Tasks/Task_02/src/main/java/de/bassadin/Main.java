@@ -1,10 +1,8 @@
 package de.bassadin;
 
-import org.eclipse.paho.client.mqttv3.MqttException;
+import de.bassadin.Clients.ClientAlice;
+import de.bassadin.Clients.ClientBob;
 
-import javax.crypto.Cipher;
-import javax.crypto.KeyGenerator;
-import java.security.Key;
 import java.util.stream.IntStream;
 
 public class Main {

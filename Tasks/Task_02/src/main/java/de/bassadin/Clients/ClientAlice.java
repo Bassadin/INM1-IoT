@@ -1,9 +1,8 @@
-package de.bassadin;
+package de.bassadin.Clients;
 
+import de.bassadin.Helpers;
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
-
-import java.util.Objects;
 
 public class ClientAlice extends BaseClient {
     public static String machineDataExchangeRequestTopic = BaseClient.machineDataExchangeTopic + "/request";
