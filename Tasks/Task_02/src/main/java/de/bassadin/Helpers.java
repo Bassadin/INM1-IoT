@@ -32,35 +32,4 @@ public class Helpers {
     public static double randomFloatBetween(double min, double max) {
         return min + Math.random() * (max - min);
     }
-
-    public static String encryptMessageWithKey(final Long secretLong, final String data) {
-        byte[] decodedKey = Base64.getDecoder().decode(secretLong.toString());
-
-        try {
-            Cipher encryptionCipher = Cipher.getInstance("AES");
-            SecretKey originalKey = new SecretKeySpec(Arrays.copyOf(decodedKey, 16), "AES");
-            encryptionCipher.init(Cipher.ENCRYPT_MODE, originalKey);
-            byte[] encryptedCipherText = encryptionCipher.doFinal(data.getBytes("UTF-8"));
-            return Base64.getEncoder().encodeToString(encryptedCipherText);
-        } catch (Exception e) {
-            throw new RuntimeException(
-                    "Error occured while encrypting data", e);
-        }
-
-    }
-
-    public static String decryptMessageWithKey(final Long secretLong, final String encryptedString) {
-        byte[] decodedKey = Base64.getDecoder().decode(secretLong.toString());
-
-        try {
-            Cipher decryptionCipher = Cipher.getInstance("AES");
-            SecretKey originalKey = new SecretKeySpec(Arrays.copyOf(decodedKey, 16), "AES");
-            decryptionCipher.init(Cipher.DECRYPT_MODE, originalKey);
-            byte[] decryptedCipherText = decryptionCipher.doFinal(Base64.getDecoder().decode(encryptedString));
-            return new String(decryptedCipherText);
-        } catch (Exception e) {
-            throw new RuntimeException(
-                    "Error occured while decrypting data", e);
-        }
-    }
 }

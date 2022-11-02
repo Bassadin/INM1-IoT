@@ -15,14 +15,6 @@ public class Main {
         clientAlice.setOtherClientReference(clientBob);
         clientBob.setOtherClientReference(clientAlice);
 
-        clientBob.subscribeToOtherClientKeyExchangeTopic();
-        clientAlice.subscribeToOtherClientKeyExchangeTopic();
-
-        System.out.println("Sending DH key exchange");
-        clientAlice.publishInitialDiffieHellmanKeyExchangeMessage();
-
-        Thread.sleep(500);
-
         clientAlice.subscribeToReceiveMachinePieceConfirmationTopic();
         clientBob.subscribeToReceiveMachinePieceDataTopic();
 
